@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import './ProductList.css';
 import ProductItem from '../ProductItem/ProductItem';
 import { useTelegram } from '../../hooks/useTelegram';
@@ -23,14 +23,36 @@ const getTotalPrice = (items = []) => {
 const ProductList = () => {
 
   const [basket, setBasket] = useState([]);
-  const { tg } = useTelegram()
+  const { tg, queryId } = useTelegram()
+
+  const onSendData = useCallback(() => {
+    const data = {
+      products: basket,
+      totalPrice: getTotalPrice(basket),
+      queryId,
+    }
+    fetch('http://95.163.230.254:3000/web-data', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    })
+  }, [basket])
+
+  useEffect(() => {
+    tg.onEvent('mainButtonClicked', onSendData)
+    return () => {
+      tg.offEvent('mainButtonClicked', onSendData)
+    }
+  }, [onSendData])
 
   const onAdd = (product) => {
     const alreadyAdded = basket.find(item => item.id === product.id);
     let newItems = [];
 
     if(alreadyAdded) {
-      newItems = basket.filter(item => item.id !== product)
+      newItems = basket.filter(item => item.id !== product.id)
     } else {
       newItems = [...basket, product]
     }
@@ -51,6 +73,7 @@ const ProductList = () => {
     <div className='list'>
       {products.map(item => 
         <ProductItem
+          key={item.id}
           product={item}
           onAdd={onAdd}
           className={'item'}
