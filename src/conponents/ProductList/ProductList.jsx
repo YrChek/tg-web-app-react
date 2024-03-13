@@ -31,28 +31,23 @@ const ProductList = () => {
       totalPrice: getTotalPrice(basket),
       queryId,
     }
-    await fetch('http://95.163.230.254:3000/web-data', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data)
-    })
+    // await fetch('http://95.163.230.254:3000/web-data', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(data)
+    // })
+    tg.sendData(JSON.stringify(data))
   }, [basket])
 
-  // useEffect(() => {
-  //   tg.onEvent('mainButtonClicked', onSendData)
-  //   return () => {
-  //     tg.offEvent('mainButtonClicked', onSendData)
-  //   }
-  // }, [onSendData])
-
   useEffect(() => {
-    tg.MainButton.onClick(onSendData)
+    tg.onEvent('mainButtonClicked', onSendData)
     return () => {
-      tg.MainButton.offClick(onSendData)
+      tg.offEvent('mainButtonClicked', onSendData)
     }
   }, [onSendData])
+
 
   const onAdd = (product) => {
     const alreadyAdded = basket.find(item => item.id === product.id);
