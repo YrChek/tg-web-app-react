@@ -31,14 +31,13 @@ const ProductList = () => {
       totalPrice: getTotalPrice(basket),
       queryId,
     }
-    // await fetch('http://95.163.230.254:3000/web-data', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(data)
-    // })
-    tg.sendData(JSON.stringify(data))
+    await fetch('api/web-data', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    })
   }, [basket])
 
   useEffect(() => {
