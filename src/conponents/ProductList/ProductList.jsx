@@ -25,13 +25,13 @@ const ProductList = () => {
   const [basket, setBasket] = useState([]);
   const { tg, queryId } = useTelegram()
 
-  const onSendData = useCallback(() => {
+  const onSendData = useCallback(async () => {
     const data = {
       products: basket,
       totalPrice: getTotalPrice(basket),
       queryId,
     }
-    fetch('http://95.163.230.254:3000/web-data', {
+    await fetch('http://95.163.230.254:3000/web-data', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
