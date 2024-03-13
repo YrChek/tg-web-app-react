@@ -40,10 +40,17 @@ const ProductList = () => {
     })
   }, [basket])
 
+  // useEffect(() => {
+  //   tg.onEvent('mainButtonClicked', onSendData)
+  //   return () => {
+  //     tg.offEvent('mainButtonClicked', onSendData)
+  //   }
+  // }, [onSendData])
+
   useEffect(() => {
-    tg.onEvent('mainButtonClicked', onSendData)
+    tg.MainButton.onClick(onSendData)
     return () => {
-      tg.offEvent('mainButtonClicked', onSendData)
+      tg.MainButton.offClick(onSendData)
     }
   }, [onSendData])
 
