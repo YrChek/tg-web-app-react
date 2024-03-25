@@ -23,21 +23,30 @@ const getTotalPrice = (items = []) => {
 const ProductList = () => {
 
   const [basket, setBasket] = useState([]);
+  const [error, setError] = useState('')
   const { tg, initData } = useTelegram()
 
-  const onSendData = useCallback(async() => {
+  const onSendData = useCallback(async () => {
+    let response;
     const data = {
       products: basket,
       totalPrice: getTotalPrice(basket),
       initData,
     }
-    await fetch('http://95.163.230.254:8000/web-data', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data)
-    })
+    try {
+      response = await fetch('http://95.163.230.254:8000/web-data', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      })
+      if (response.status !== 200) {
+        setError(response.statusText)
+      }
+    } catch (e) {
+      setError(e)
+    }
   }, [basket])
 
   useEffect(() => {
@@ -71,6 +80,7 @@ const ProductList = () => {
   }
 
   return (
+    <>
     <div className='list'>
       {products.map(item => 
         <ProductItem
@@ -80,7 +90,9 @@ const ProductList = () => {
           className={'item'}
         />
         )}
-      </div>
+    </div>
+    <div>status = {error}</div>
+    </>
   )
 }
 
