@@ -23,22 +23,21 @@ const getTotalPrice = (items = []) => {
 const ProductList = () => {
 
   const [basket, setBasket] = useState([]);
-  const { tg, queryId } = useTelegram()
+  const { tg, initData } = useTelegram()
 
-  const onSendData = useCallback(() => {
+  const onSendData = useCallback(async() => {
     const data = {
       products: basket,
       totalPrice: getTotalPrice(basket),
-      // queryId,
+      initData,
     }
-    // await fetch('api/web-data', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',s
-    //   },
-    //   body: JSON.stringify(data)
-    // })
-    tg.sendData(JSON.stringify(data))
+    await fetch('http://95.163.230.254:8000/web-data', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    })
   }, [basket])
 
   useEffect(() => {
@@ -72,19 +71,16 @@ const ProductList = () => {
   }
 
   return (
-    <>
-      <div className='list'>
-        {products.map(item => 
-          <ProductItem
-            key={item.id}
-            product={item}
-            onAdd={onAdd}
-            className={'item'}
-          />
+    <div className='list'>
+      {products.map(item => 
+        <ProductItem
+          key={item.id}
+          product={item}
+          onAdd={onAdd}
+          className={'item'}
+        />
         )}
       </div>
-      <div>строка = {queryId}</div>
-    </>
   )
 }
 
