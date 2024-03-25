@@ -23,7 +23,7 @@ const getTotalPrice = (items = []) => {
 const ProductList = () => {
 
   const [basket, setBasket] = useState([]);
-  const { tg } = useTelegram()
+  const { tg, queryId } = useTelegram()
 
   const onSendData = useCallback(() => {
     const data = {
@@ -72,16 +72,19 @@ const ProductList = () => {
   }
 
   return (
-    <div className='list'>
-      {products.map(item => 
-        <ProductItem
-          key={item.id}
-          product={item}
-          onAdd={onAdd}
-          className={'item'}
-        />
-      )}
-    </div>
+    <>
+      <div className='list'>
+        {products.map(item => 
+          <ProductItem
+            key={item.id}
+            product={item}
+            onAdd={onAdd}
+            className={'item'}
+          />
+        )}
+      </div>
+      <div>строка = {queryId}</div>
+    </>
   )
 }
 
