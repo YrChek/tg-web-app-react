@@ -42,10 +42,10 @@ const ProductList = () => {
         body: JSON.stringify(data)
       })
       if (response.status !== 200) {
-        setError(response.statusText)
+        setError('Код не 200')
       }
     } catch (e) {
-      setError(e)
+      setError(e.message)
     }
   }, [basket])
 
