@@ -45,7 +45,7 @@ const ProductList = () => {
         setError('Код не 200')
       }
     } catch (e) {
-      setError(e.message)
+      setError(`${e.name}: ${e.message}`)
     }
   }, [basket])
 
