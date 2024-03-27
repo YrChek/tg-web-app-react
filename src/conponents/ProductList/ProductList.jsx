@@ -34,7 +34,7 @@ const ProductList = () => {
       initData,
     }
     try {
-      response = await fetch('http://95.163.230.254:8000/web-data', {
+      response = await fetch('http://95.163.230.254/web-data', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
